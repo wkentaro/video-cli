@@ -78,6 +78,9 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
     ],
     entry_points={
-        "console_scripts": ["video-retime=video_cli.retime:main"]
+        "console_scripts": [
+            "video-retime=video_cli.retime:main",
+            "video-togif=video_cli.togif:main",
+        ]
     },
 )

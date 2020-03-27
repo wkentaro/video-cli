@@ -1,3 +1,4 @@
 imageio
 imageio-ffmpeg
+imgviz
 tqdm
