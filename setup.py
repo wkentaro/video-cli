@@ -86,6 +86,7 @@ setup(
             "video-toimg=video_cli.toimg:main",
             "video-tovideo=video_cli.tovideo:main",
             "video-resize=video_cli.resize:main",
+            "video-fromimg=video_cli.fromimg:main",
         ]
     },
 )

@@ -63,3 +63,10 @@ video-tovideo data/2018-11-02_14-44-14.mp4
 ```bash
 video-resize data/2018-11-02_14-44-14.mp4 --scale 0.5
 ```
+
+### `video-fromimg`: **Create Video from Images**
+
+```bash
+video-toimg data/2018-11-02_14-44-14.mp4
+video-fromimg "data/2018-11-02_14-44-14/*.jpg" --fps 30
+```
