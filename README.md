@@ -20,9 +20,16 @@ pip install video-cli
 
 ## Commands
 
-### `video_retime`: **Video Retiming (Speed Up/Down)**
+### `video-retime`: **Video Retiming (Speed Up/Down)**
 
 ```bash
-$ video_retime data/2018-11-02_14-44-14.mp4 --retime 2
-$ video_retime data/2018-11-02_14-44-14.mp4 --retime 2 --inplace
+$ video-retime data/2018-11-02_14-44-14.mp4 --retime 2
+$ video-retime data/2018-11-02_14-44-14.mp4 --retime 2 --inplace
+```
+
+### `video-togif`: **Create GIF**
+
+```bash
+$ video-togif data/2018-11-02_14-44-14.mp4 --fps 2 --duration 5
+$ video-togif data/2018-11-02_14-44-14.mp4 --fps 2 --duration 5 --resize 0.5
 ```
