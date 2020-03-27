@@ -81,6 +81,7 @@ setup(
         "console_scripts": [
             "video-retime=video_cli.retime:main",
             "video-togif=video_cli.togif:main",
+            "video-clip=video_cli.clip:main",
         ]
     },
 )
