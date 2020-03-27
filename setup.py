@@ -82,6 +82,7 @@ setup(
             "video-retime=video_cli.retime:main",
             "video-togif=video_cli.togif:main",
             "video-clip=video_cli.clip:main",
+            "video-tile=video_cli.tile:main",
         ]
     },
 )

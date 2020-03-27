@@ -39,3 +39,9 @@ $ video-togif data/2018-11-02_14-44-14.mp4 --fps 2 --duration 5 --resize 0.5
 ```bash
 $ video-clip data/2018-11-02_14-44-14.mp4 --start 3 --duration 5
 ```
+
+### `video-tile`: **Video Tiling**
+
+```bash
+$ video-tile data/2018-11-02_14-44-14.mp4 data/2018-11-02_14-44-14.mp4 --shape 1x2 -o tile.mp4
+```
