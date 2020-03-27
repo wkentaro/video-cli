@@ -83,6 +83,7 @@ setup(
             "video-togif=video_cli.togif:main",
             "video-clip=video_cli.clip:main",
             "video-tile=video_cli.tile:main",
+            "video-toimg=video_cli.toimg:main",
         ]
     },
 )

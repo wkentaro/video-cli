@@ -45,3 +45,9 @@ $ video-clip data/2018-11-02_14-44-14.mp4 --start 3 --duration 5
 ```bash
 $ video-tile data/2018-11-02_14-44-14.mp4 data/2018-11-02_14-44-14.mp4 --shape 1x2 -o tile.mp4
 ```
+
+### `video-toimg`: **Convert to Images**
+
+```bash
+$ video-toimg data/2018-11-02_14-44-14.mp4 --rate 10 --start 3 --duration 10
+```
