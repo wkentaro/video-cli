@@ -12,7 +12,7 @@ def get_macro_block_size(size):
     return macro_block_size
 
 
-def video_retime(in_file, retime, inplace=False):
+def retime(in_file, retime, inplace=False):
     stem, ext = osp.splitext(in_file)
     out_file = stem + "_retime{:.3g}".format(retime) + ext
 
@@ -49,4 +49,4 @@ def main():
     args = parser.parse_args()
 
     for in_file in args.in_files:
-        video_retime(in_file=in_file, retime=args.retime, inplace=args.inplace)
+        retime(in_file=in_file, retime=args.retime, inplace=args.inplace)
