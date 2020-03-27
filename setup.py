@@ -84,6 +84,7 @@ setup(
             "video-clip=video_cli.clip:main",
             "video-tile=video_cli.tile:main",
             "video-toimg=video_cli.toimg:main",
+            "video-tovideo=video_cli.tovideo:main",
         ]
     },
 )
