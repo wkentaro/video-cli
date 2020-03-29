@@ -1,6 +1,9 @@
 <div align="center">
   <h1>video-cli</h1>
   <h3>Command line tools for quick video editing.</h3>
+  <a href="https://pypi.python.org/pypi/video-cli"><img src="https://img.shields.io/pypi/v/video-cli.svg"></a>
+  <a href="https://pypi.org/project/video-cli"><img src="https://img.shields.io/pypi/pyversions/video-cli.svg"></a>
+  <a href="https://github.com/wkentaro/video-cli/actions"><img src="https://github.com/wkentaro/video-cli/workflows/ci/badge.svg"></a>
 </div>
 
 
