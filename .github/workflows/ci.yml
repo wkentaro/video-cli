@@ -13,7 +13,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [2.7, 3.5, 3.6, 3.7]
+        python-version: [3.5, 3.6, 3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v1
@@ -33,9 +33,11 @@ jobs:
 
     - name: Lint
       run: |
-        pip install -U black && black --check . || true
+        pip install -U black
+        black --check .
         pip install -U hacking
         flake8 .
+      if: matrix.python-version != '3.5'
 
     - name: Install from dist
       run: |
