@@ -83,7 +83,7 @@ setup(
         "console_scripts": [
             "video-retime=video_cli.retime:main",
             "video-togif=video_cli.togif:main",
-            "video-clip=video_cli.clip:main",
+            "video-trim=video_cli.trim:main",
             "video-tile=video_cli.tile:main",
             "video-toimg=video_cli.toimg:main",
             "video-tovideo=video_cli.tovideo:main",

@@ -9,7 +9,10 @@ from .retime import get_macro_block_size
 
 def clip(in_file, start=0, end=None, inplace=False):
     stem, ext = osp.splitext(in_file)
-    out_file = stem + "_clip{:.3g}-{:.3g}".format(start, end) + ext
+    if end is None:
+        out_file = stem + "_trim{:.3g}-end".format(start) + ext
+    else:
+        out_file = stem + "_trim{:.3g}-{:.3g}".format(start, end) + ext
 
     reader = imageio.get_reader(in_file)
     meta_data = reader.get_meta_data()
