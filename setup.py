@@ -58,6 +58,7 @@ setup(
     name=name,
     version=version,
     packages=find_packages(exclude=["github2pypi"]),
+    python_requires=">=3.5",
     install_requires=get_install_requires(),
     description="Command line tools for quick video editing.",
     long_description=get_long_description(),
