@@ -10,7 +10,7 @@ import sys
 
 github_slug = "wkentaro/video-cli"
 name = "video-cli"
-version = "0.4.0"
+version = "1.0.0"
 
 
 if sys.argv[1] == "release":
