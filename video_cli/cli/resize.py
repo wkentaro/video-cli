@@ -5,7 +5,7 @@ import imageio
 import imgviz
 import tqdm
 
-from .retime import get_macro_block_size
+from ..utils import get_macro_block_size
 
 
 def resize(in_file, scale=1):

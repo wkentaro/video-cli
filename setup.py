@@ -82,14 +82,14 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "video-retime=video_cli.retime:main",
-            "video-togif=video_cli.togif:main",
-            "video-trim=video_cli.trim:main",
-            "video-tile=video_cli.tile:main",
-            "video-toimg=video_cli.toimg:main",
-            "video-tovideo=video_cli.tovideo:main",
-            "video-resize=video_cli.resize:main",
-            "video-fromimg=video_cli.fromimg:main",
+            "video-retime=video_cli.cli.retime:main",
+            "video-togif=video_cli.cli.togif:main",
+            "video-trim=video_cli.cli.trim:main",
+            "video-tile=video_cli.cli.tile:main",
+            "video-toimg=video_cli.cli.toimg:main",
+            "video-tovideo=video_cli.cli.tovideo:main",
+            "video-resize=video_cli.cli.resize:main",
+            "video-fromimg=video_cli.cli.fromimg:main",
         ]
     },
 )

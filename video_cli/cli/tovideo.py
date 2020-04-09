@@ -4,17 +4,12 @@ import os.path as osp
 import imageio
 import tqdm
 
-
-def get_macro_block_size(size):
-    for macro_block_size in range(16, 0, -1):
-        if size[0] % macro_block_size == 0 and size[1] % macro_block_size == 0:
-            break
-    return macro_block_size
+from ..utils import get_macro_block_size
 
 
-def retime(in_file, retime, inplace=False):
+def tovideo(in_file, inplace=False):
     stem, ext = osp.splitext(in_file)
-    out_file = stem + "_retime{:.3g}".format(retime) + ext
+    out_file = stem + "_tovideo" + ext
 
     reader = imageio.get_reader(in_file)
     meta_data = reader.get_meta_data()
@@ -23,9 +18,11 @@ def retime(in_file, retime, inplace=False):
     macro_block_size = get_macro_block_size(meta_data["size"])
 
     writer = imageio.get_writer(
-        out_file, fps=fps * retime, macro_block_size=macro_block_size
+        out_file, fps=fps, macro_block_size=macro_block_size
     )
-    for data in tqdm.tqdm(reader, total=reader.count_frames()):
+
+    for i in tqdm.trange(reader.count_frames()):
+        data = reader.get_data(i)
         writer.append_data(data)
 
     reader.close()
@@ -39,14 +36,11 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("in_files", nargs="+", help="input files")
-    parser.add_argument(
-        "--retime", "-x", type=float, default=1, help="retime factor"
-    )
+    parser.add_argument("in_files", nargs="+", help="input video")
     parser.add_argument(
         "--inplace", "-i", action="store_true", help="operate in-place"
     )
     args = parser.parse_args()
 
     for in_file in args.in_files:
-        retime(in_file=in_file, retime=args.retime, inplace=args.inplace)
+        tovideo(in_file, inplace=args.inplace)

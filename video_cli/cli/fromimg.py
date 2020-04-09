@@ -1,16 +1,12 @@
 import argparse
 import glob
 import os.path as osp
-import re
 
 import imageio
 import tqdm
 
-
-def natural_sort(l):
-    convert = lambda text: int(text) if text.isdigit() else text.lower()
-    alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
-    return sorted(l, key=alphanum_key)
+from ..utils import get_macro_block_size
+from ..utils import natural_sort
 
 
 def main():
@@ -33,8 +29,15 @@ def main():
         n_times_write = 10 // args.fps
         args.fps = 10
 
-    writer = imageio.get_writer(args.out_file, fps=args.fps)
+    writer = None
     for f in tqdm.tqdm(natural_sort(args.input_files), ncols=80):
         frame = imageio.imread(f)
+
+        if writer is None:
+            writer = imageio.get_writer(
+                args.out_file,
+                fps=args.fps,
+                macro_block_size=get_macro_block_size(frame.shape[:2]),
+            )
         for _ in range(n_times_write):
             writer.append_data(frame)

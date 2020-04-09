@@ -1,52 +1,54 @@
-#!/usr/bin/env python
-
 import argparse
-import imageio
-import os
 import os.path as osp
+
+import imageio
 import tqdm
 
+from ..utils import get_macro_block_size
 
-def toimg(in_file, start=0, end=None, rate=1):
+
+def clip(in_file, start=0, end=None, inplace=False):
     stem, ext = osp.splitext(in_file)
-    if not osp.exists(stem):
-        os.makedirs(stem)
+    if end is None:
+        out_file = stem + "_trim{:.3g}-end".format(start) + ext
+    else:
+        out_file = stem + "_trim{:.3g}-{:.3g}".format(start, end) + ext
 
     reader = imageio.get_reader(in_file)
     meta_data = reader.get_meta_data()
+    fps = meta_data["fps"]
 
-    i_offset = None
+    macro_block_size = get_macro_block_size(meta_data["size"])
+
+    writer = imageio.get_writer(
+        out_file, fps=fps, macro_block_size=macro_block_size
+    )
+
     for i in tqdm.trange(reader.count_frames()):
         elapsed_time = i * 1.0 / meta_data["fps"]
         if elapsed_time < start:
             continue
-        if i_offset is None:
-            i_offset = i
 
-        if (i - i_offset) % rate == 0:
-            data = reader.get_data(i)
-            imageio.imsave(osp.join(stem, "{:08d}.jpg".format(i)), data)
+        data = reader.get_data(i)
+        writer.append_data(data)
 
         if end and elapsed_time >= end:
             break
 
     reader.close()
+    writer.close()
+
+    if inplace:
+        raise NotImplementedError
 
 
 def main():
-    def natural_number(val):
-        val = int(val)
-        if val < 1:
-            raise ValueError("val must be natural number")
-        return val
-
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("in_files", nargs="+", help="input video")
     parser.add_argument("--start", type=float, default=0, help="start")
     parser.add_argument("--duration", type=float, help="duration")
-    parser.add_argument("--rate", type=natural_number, default=1, help="rate")
     args = parser.parse_args()
 
     end = None
@@ -54,4 +56,6 @@ def main():
         end = args.start + args.duration
 
     for in_file in args.in_files:
-        toimg(in_file=in_file, start=args.start, end=end, rate=args.rate)
+        clip(
+            in_file=in_file, start=args.start, end=end,
+        )

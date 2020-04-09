@@ -5,7 +5,7 @@ import imgviz
 import numpy as np
 import tqdm
 
-from .retime import get_macro_block_size
+from ..utils import get_macro_block_size
 
 
 def tile(in_files, out, resize=1, shape=None):
