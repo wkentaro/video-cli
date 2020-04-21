@@ -3,10 +3,19 @@ import os.path as osp
 
 import imageio
 import imgviz
+import numpy as np
 import tqdm
 
 
-def togif(in_file, fps=None, retime=1, start=0, duration=None, resize=None):
+def togif(
+    in_file,
+    fps=None,
+    retime=1,
+    start=0,
+    duration=None,
+    resize=None,
+    blank_end=None,
+):
 
     out_file = osp.splitext(in_file)[0] + ".gif"
 
@@ -47,6 +56,9 @@ def togif(in_file, fps=None, retime=1, start=0, duration=None, resize=None):
         if duration and (elapsed_time - start) >= duration:
             break
 
+    if blank_end is not None:
+        writer.append_data(np.full_like(frame, blank_end))
+
     reader.close()
 
 
@@ -60,6 +72,7 @@ def main():
     parser.add_argument("--start", type=float, default=0, help="start")
     parser.add_argument("--duration", type=float, help="duration")
     parser.add_argument("--resize", type=float, default=1, help="resize")
+    parser.add_argument("--blank-end", type=int, help="blank end")
     args = parser.parse_args()
 
     for in_file in args.in_files:
@@ -70,4 +83,5 @@ def main():
             start=args.start,
             duration=args.duration,
             resize=args.resize,
+            blank_end=args.blank_end,
         )

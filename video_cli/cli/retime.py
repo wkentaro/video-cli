@@ -4,6 +4,8 @@ import os.path as osp
 import imageio
 import tqdm
 
+from ..utils import get_macro_block_size
+
 
 def retime(in_file, retime, inplace=False):
     stem, ext = osp.splitext(in_file)
