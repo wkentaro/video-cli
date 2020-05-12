@@ -19,8 +19,8 @@ def resize(in_file, scale=1):
     width, height = None, None
     if scale:
         width, height = meta["size"]
-        width = int(round(scale * width))
-        height = int(round(scale * height))
+        width = int(round(scale * width) // 2 * 2)
+        height = int(round(scale * height) // 2 * 2)
 
     macro_block_size = get_macro_block_size((height, width))
 
