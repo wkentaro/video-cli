@@ -3,6 +3,7 @@ import glob
 import os.path as osp
 
 import imageio
+import imgviz
 import tqdm
 
 from ..utils import get_macro_block_size
@@ -37,6 +38,13 @@ def main():
     writer = None
     for f in tqdm.tqdm(files, ncols=80):
         frame = imageio.imread(f)
+
+        H, W = frame.shape[:2]
+        if H % 2 != 0:
+            H = (H // 2 + 1) * 2
+        if W % 2 != 0:
+            W = (W // 2 + 1) * 2
+        frame = imgviz.centerize(frame, (H, W))
 
         if writer is None:
             writer = imageio.get_writer(
