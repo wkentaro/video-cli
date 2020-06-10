@@ -19,6 +19,7 @@ def main():
         help="Input patterns like '*.jpg'",
     )
     parser.add_argument("--fps", type=int, default=10)
+    parser.add_argument("--nframes", type=int, help="num frames")
     args = parser.parse_args()
 
     args.input_files = glob.glob(args.input_files)
@@ -29,8 +30,12 @@ def main():
         n_times_write = 10 // args.fps
         args.fps = 10
 
+    files = natural_sort(args.input_files)
+    if args.nframes:
+        files = files[:args.nframes]
+
     writer = None
-    for f in tqdm.tqdm(natural_sort(args.input_files), ncols=80):
+    for f in tqdm.tqdm(files, ncols=80):
         frame = imageio.imread(f)
 
         if writer is None:
