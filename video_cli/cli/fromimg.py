@@ -1,27 +1,32 @@
 import argparse
 import glob
 import os.path as osp
+import pprint
 
 import imageio
-import imgviz
 import tqdm
 
-from ..utils import get_macro_block_size
-from ..utils import natural_sort
+from .. import utils
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("out_file")
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument("out_file", help="out file")
     parser.add_argument(
         "-i",
         "--input-files",
         default="*.jpg",
         help="Input patterns like '*.jpg'",
     )
-    parser.add_argument("--fps", type=int, default=10)
-    parser.add_argument("--nframes", type=int, help="num frames")
+    parser.add_argument("--fps", type=int, default=10, help="fps")
+    parser.add_argument(
+        "--nframes", type=int, help="num frames (default: all)"
+    )
     args = parser.parse_args()
+
+    pprint.pprint(args.__dict__)
 
     args.input_files = glob.glob(args.input_files)
 
@@ -31,26 +36,21 @@ def main():
         n_times_write = 10 // args.fps
         args.fps = 10
 
-    files = natural_sort(args.input_files)
+    files = utils.natural_sort(args.input_files)
     if args.nframes:
-        files = files[:args.nframes]
+        files = files[: args.nframes]
 
     writer = None
-    for f in tqdm.tqdm(files, ncols=80):
+    for f in tqdm.tqdm(iterable=files, desc=args.out_file):
         frame = imageio.imread(f)
-
-        H, W = frame.shape[:2]
-        if H % 2 != 0:
-            H = (H // 2 + 1) * 2
-        if W % 2 != 0:
-            W = (W // 2 + 1) * 2
-        frame = imgviz.centerize(frame, (H, W))
+        frame = utils.resize_to_even(frame)
 
         if writer is None:
             writer = imageio.get_writer(
                 args.out_file,
                 fps=args.fps,
-                macro_block_size=get_macro_block_size(frame.shape[:2]),
+                macro_block_size=utils.get_macro_block_size(frame.shape[:2]),
+                ffmpeg_log_level="error",
             )
         for _ in range(n_times_write):
             writer.append_data(frame)
