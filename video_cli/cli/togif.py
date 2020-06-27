@@ -1,5 +1,6 @@
 import argparse
 import os.path as osp
+import pprint
 
 import imageio
 import imgviz
@@ -74,6 +75,8 @@ def main():
     parser.add_argument("--resize", type=float, default=1, help="resize")
     parser.add_argument("--blank-end", type=int, help="blank end")
     args = parser.parse_args()
+
+    pprint.pprint(args.__dict__)
 
     for in_file in args.in_files:
         togif(
