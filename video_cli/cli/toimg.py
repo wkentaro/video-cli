@@ -1,7 +1,9 @@
 import argparse
-import imageio
 import os
 import os.path as osp
+import pprint
+
+import imageio
 import tqdm
 
 
@@ -46,6 +48,8 @@ def main():
     parser.add_argument("--duration", type=float, help="duration")
     parser.add_argument("--rate", type=natural_number, default=1, help="rate")
     args = parser.parse_args()
+
+    pprint.pprint(args.__dict__)
 
     end = None
     if args.duration:
