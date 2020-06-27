@@ -1,5 +1,6 @@
 import argparse
 import os.path as osp
+import pprint
 
 import imageio
 import imgviz
@@ -25,10 +26,13 @@ def resize(in_file, scale=1):
     macro_block_size = get_macro_block_size((height, width))
 
     writer = imageio.get_writer(
-        out_file, fps=fps, macro_block_size=macro_block_size
+        out_file,
+        fps=fps,
+        macro_block_size=macro_block_size,
+        ffmpeg_log_level="error",
     )
 
-    for i in tqdm.trange(reader.count_frames()):
+    for i in tqdm.trange(reader.count_frames(), desc=out_file):
         frame = reader.get_data(i)
         if width is not None and height is not None:
             frame = imgviz.resize(
@@ -47,6 +51,8 @@ def main():
     parser.add_argument("in_files", nargs="+", help="input video")
     parser.add_argument("--scale", type=float, default=1, help="resize")
     args = parser.parse_args()
+
+    pprint.pprint(args.__dict__)
 
     for in_file in args.in_files:
         resize(
