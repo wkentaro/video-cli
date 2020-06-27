@@ -5,7 +5,7 @@ import pprint
 import imageio
 import tqdm
 
-from ..utils import get_macro_block_size
+from .. import utils
 
 
 def retime(in_file, retime, inplace=False):
@@ -14,14 +14,11 @@ def retime(in_file, retime, inplace=False):
 
     reader = imageio.get_reader(in_file)
     meta_data = reader.get_meta_data()
-    fps = meta_data["fps"]
-
-    macro_block_size = get_macro_block_size(meta_data["size"])
 
     writer = imageio.get_writer(
         out_file,
-        fps=fps * retime,
-        macro_block_size=macro_block_size,
+        fps=meta_data["fps"] * retime,
+        macro_block_size=utils.get_macro_block_size(meta_data["size"]),
         ffmpeg_log_level="error",
     )
     for data in tqdm.tqdm(reader, desc=out_file, total=reader.count_frames()):
