@@ -1,10 +1,11 @@
 import argparse
 import os.path as osp
+import pprint
 
 import imageio
 import tqdm
 
-from ..utils import get_macro_block_size
+from .. import utils
 
 
 def clip(in_file, start=0, end=None, inplace=False):
@@ -16,15 +17,14 @@ def clip(in_file, start=0, end=None, inplace=False):
 
     reader = imageio.get_reader(in_file)
     meta_data = reader.get_meta_data()
-    fps = meta_data["fps"]
-
-    macro_block_size = get_macro_block_size(meta_data["size"])
 
     writer = imageio.get_writer(
-        out_file, fps=fps, macro_block_size=macro_block_size
+        out_file,
+        fps=meta_data["fps"],
+        macro_block_size=utils.get_macro_block_size(meta_data["size"]),
     )
 
-    for i in tqdm.trange(reader.count_frames()):
+    for i in tqdm.trange(reader.count_frames(), desc=out_file):
         elapsed_time = i * 1.0 / meta_data["fps"]
         if elapsed_time < start:
             continue
@@ -50,6 +50,8 @@ def main():
     parser.add_argument("--start", type=float, default=0, help="start")
     parser.add_argument("--duration", type=float, help="duration")
     args = parser.parse_args()
+
+    pprint.pprint(args.__dict__)
 
     end = None
     if args.duration:
