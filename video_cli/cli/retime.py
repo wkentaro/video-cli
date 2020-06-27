@@ -1,5 +1,6 @@
 import argparse
 import os.path as osp
+import pprint
 
 import imageio
 import tqdm
@@ -18,9 +19,12 @@ def retime(in_file, retime, inplace=False):
     macro_block_size = get_macro_block_size(meta_data["size"])
 
     writer = imageio.get_writer(
-        out_file, fps=fps * retime, macro_block_size=macro_block_size
+        out_file,
+        fps=fps * retime,
+        macro_block_size=macro_block_size,
+        ffmpeg_log_level="error",
     )
-    for data in tqdm.tqdm(reader, total=reader.count_frames()):
+    for data in tqdm.tqdm(reader, desc=out_file, total=reader.count_frames()):
         writer.append_data(data)
 
     reader.close()
@@ -42,6 +46,8 @@ def main():
         "--inplace", "-i", action="store_true", help="operate in-place"
     )
     args = parser.parse_args()
+
+    pprint.pprint(args.__dict__)
 
     for in_file in args.in_files:
         retime(in_file=in_file, retime=args.retime, inplace=args.inplace)
