@@ -1,11 +1,12 @@
 import argparse
+import pprint
 
 import imageio
 import imgviz
 import numpy as np
 import tqdm
 
-from ..utils import get_macro_block_size
+from .. import utils
 
 
 def tile(in_files, out, resize=1, shape=None):
@@ -23,7 +24,7 @@ def tile(in_files, out, resize=1, shape=None):
     i = 0
     writer = None
     images_blank = None
-    pbar = tqdm.tqdm(total=max_n_frames)
+    pbar = tqdm.tqdm(desc=out, total=max_n_frames)
     while True:
         images = []
         finished = []
@@ -44,12 +45,14 @@ def tile(in_files, out, resize=1, shape=None):
         if images_blank is None:
             images_blank = [np.zeros_like(img) for img in images]
         img = imgviz.tile(images, shape=shape, border=(255, 255, 255))
+        img = utils.resize_to_even(img)
         i += 1
         if writer is None:
             writer = imageio.get_writer(
                 out,
                 fps=fps,
-                macro_block_size=get_macro_block_size(img.shape[:2]),
+                macro_block_size=utils.get_macro_block_size(img.shape[:2]),
+                ffmpeg_log_level="error",
             )
         writer.append_data(img)
         pbar.update()
@@ -65,6 +68,8 @@ def main():
     parser.add_argument("--resize", type=float, default=1, help="resize")
     parser.add_argument("--shape", help="row x col (e.g., 2x3)")
     args = parser.parse_args()
+
+    pprint.pprint(args.__dict__)
 
     if args.shape is not None:
         args.shape = [int(x) for x in args.shape.split("x")]
