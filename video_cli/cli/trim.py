@@ -59,5 +59,7 @@ def main():
 
     for in_file in args.in_files:
         clip(
-            in_file=in_file, start=args.start, end=end,
+            in_file=in_file,
+            start=args.start,
+            end=end,
         )

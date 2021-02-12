@@ -56,5 +56,6 @@ def main():
 
     for in_file in args.in_files:
         resize(
-            in_file=in_file, scale=args.scale,
+            in_file=in_file,
+            scale=args.scale,
         )
