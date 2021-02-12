@@ -30,7 +30,7 @@ video-retime data/2018-11-02_14-44-14.mp4 --retime 2
 video-retime data/2018-11-02_14-44-14.mp4 --retime 2 --inplace
 ```
 
-### `video-togif`: **Create GIF**
+### `video-togif`: **Create a GIF**
 
 ```bash
 video-togif data/2018-11-02_14-44-14.mp4 --fps 2 --duration 5
@@ -49,7 +49,7 @@ video-trim data/2018-11-02_14-44-14.mp4 --start 3 --duration 5
 video-tile data/2018-11-02_14-44-14.mp4 data/2018-11-02_14-44-14.mp4 --shape 1x2 -o tile.mp4
 ```
 
-### `video-toimg`: **Convert to Images**
+### `video-toimg`: **Convert a Video to Images**
 
 ```bash
 video-toimg data/2018-11-02_14-44-14.mp4 --rate 10 --start 3 --duration 10
@@ -67,9 +67,15 @@ video-tovideo data/2018-11-02_14-44-14.mp4
 video-resize data/2018-11-02_14-44-14.mp4 --scale 0.5
 ```
 
-### `video-fromimg`: **Create Video from Images**
+### `video-fromimg`: **Create a Video from Images**
 
 ```bash
 video-toimg data/2018-11-02_14-44-14.mp4
 video-fromimg "data/2018-11-02_14-44-14/*.jpg" --fps 30
+```
+
+### `video-crop`: **Crop a region of a Video**
+
+```bash
+video-crop data/2018-11-02_14-44-14.mp4
 ```

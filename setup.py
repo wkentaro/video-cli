@@ -82,6 +82,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
+            "video-crop=video_cli.cli.crop:main",
             "video-retime=video_cli.cli.retime:main",
             "video-togif=video_cli.cli.togif:main",
             "video-trim=video_cli.cli.trim:main",
