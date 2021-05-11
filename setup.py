@@ -91,6 +91,7 @@ setup(
             "video-tovideo=video_cli.cli.tovideo:main",
             "video-resize=video_cli.cli.resize:main",
             "video-fromimg=video_cli.cli.fromimg:main",
+            "video-metadata=video_cli.cli.metadata:main",
         ]
     },
 )
