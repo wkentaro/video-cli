@@ -1,6 +1,7 @@
 import argparse
 import os.path as osp
 import pprint
+import shutil
 
 import imageio
 import tqdm
@@ -28,7 +29,7 @@ def retime(in_file, retime, inplace=False):
     writer.close()
 
     if inplace:
-        raise NotImplementedError
+        shutil.move(out_file, in_file)
 
 
 def main():

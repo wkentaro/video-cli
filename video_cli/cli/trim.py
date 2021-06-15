@@ -1,6 +1,7 @@
 import argparse
 import os.path as osp
 import pprint
+import shutil
 
 import imageio
 import tqdm
@@ -38,8 +39,8 @@ def clip(in_file, start=0, end=None, inplace=False):
     reader.close()
     writer.close()
 
-    if inplace:
-        raise NotImplementedError
+    if inplace and osp.exists(out_file):
+        shutil.move(out_file, in_file)
 
 
 def main():
@@ -49,6 +50,9 @@ def main():
     parser.add_argument("in_files", nargs="+", help="input video")
     parser.add_argument("--start", type=float, default=0, help="start")
     parser.add_argument("--duration", type=float, help="duration")
+    parser.add_argument(
+        "--inplace", "-i", action="store_true", help="operate in-place"
+    )
     args = parser.parse_args()
 
     pprint.pprint(args.__dict__)
@@ -62,4 +66,5 @@ def main():
             in_file=in_file,
             start=args.start,
             end=end,
+            inplace=args.inplace,
         )
