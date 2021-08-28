@@ -7,7 +7,7 @@ import imageio
 import tqdm
 
 
-def toimg(in_file, start=0, end=None, rate=1):
+def toimg(in_file, start=0, end=None, per=1):
     stem, ext = osp.splitext(in_file)
     if not osp.exists(stem):
         os.makedirs(stem)
@@ -23,9 +23,11 @@ def toimg(in_file, start=0, end=None, rate=1):
         if i_offset is None:
             i_offset = i
 
-        if (i - i_offset) % rate == 0:
-            data = reader.get_data(i)
-            imageio.imsave(osp.join(stem, "{:08d}.jpg".format(i)), data)
+        if (i - i_offset) % per == 0:
+            img = reader.get_data(i)
+            img_file = osp.join(stem, "{:08d}.jpg".format(i))
+            if not osp.exists(img_file):
+                imageio.imsave(img_file, img)
 
         if end and elapsed_time >= end:
             break
@@ -34,19 +36,15 @@ def toimg(in_file, start=0, end=None, rate=1):
 
 
 def main():
-    def natural_number(val):
-        val = int(val)
-        if val < 1:
-            raise ValueError("val must be natural number")
-        return val
-
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("in_files", nargs="+", help="input video")
-    parser.add_argument("--start", type=float, default=0, help="start")
-    parser.add_argument("--duration", type=float, help="duration")
-    parser.add_argument("--rate", type=natural_number, default=1, help="rate")
+    parser.add_argument("in_files", nargs="+", help="input video file")
+    parser.add_argument("--start", type=float, default=0, help="start [s]")
+    parser.add_argument("--duration", type=float, help="duration [s]")
+    parser.add_argument(
+        "--per", "--rate", type=int, default=1, help="save per"
+    )
     args = parser.parse_args()
 
     pprint.pprint(args.__dict__)
@@ -56,4 +54,4 @@ def main():
         end = args.start + args.duration
 
     for in_file in args.in_files:
-        toimg(in_file=in_file, start=args.start, end=end, rate=args.rate)
+        toimg(in_file=in_file, start=args.start, end=end, per=args.per)
