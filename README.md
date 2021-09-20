@@ -8,7 +8,7 @@
 
 
 Video-cli is made aiming at editing video with a one-line
-command on a terminal. You can do more detailed video editing using
+command on a terminal. More detailed video editing can be done with
 other Python tools (e.g., [MoviePy](https://github.com/Zulko/moviepy))
 and GUI video editors (e.g., [iMovie](https://www.apple.com/imovie/)),
 which is not the goal of this tool.
