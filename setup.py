@@ -10,7 +10,7 @@ import sys
 
 github_slug = "wkentaro/video-cli"
 name = "video-cli"
-version = "1.3.1"
+version = "1.3.2"
 
 
 if sys.argv[1] == "release":
@@ -21,9 +21,9 @@ if sys.argv[1] == "release":
         sys.exit(1)
 
     commands = [
-        "git pull origin master",
+        "git pull origin main",
         "git tag v{:s}".format(version),
-        "git push origin master --tag",
+        "git push origin main --tag",
         "python setup.py sdist",
         "twine upload dist/{:s}-{:s}.tar.gz".format(name, version),
     ]
