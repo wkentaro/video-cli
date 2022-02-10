@@ -31,7 +31,7 @@ def selectROI(img):
     return y1, x1, y2, x2
 
 
-def crop(in_file):
+def crop(in_file, process=True, roi=None, time=0):
     stem, ext = osp.splitext(in_file)
     out_file = stem + "_crop" + ext
 
@@ -39,7 +39,10 @@ def crop(in_file):
     meta = reader.get_meta_data()
     fps = meta["fps"]
 
-    y1, x1, y2, x2 = selectROI(reader.get_data(0))
+    if roi:
+        y1, y2, x1, x2 = roi
+    else:
+        y1, x1, y2, x2 = selectROI(reader.get_data(int(round(time * fps))))
 
     width = x2 - x1
     height = y2 - y1
@@ -50,6 +53,11 @@ def crop(in_file):
     if width % 2 != 0:
         width -= 1
         x2 -= 1
+
+    print(f"--roi {y1} {y2} {x1} {x2}")
+
+    if not process:
+        return
 
     macro_block_size = get_macro_block_size((height, width))
 
@@ -74,8 +82,18 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("in_file", help="input video")
+    parser.add_argument("--noprocess", action="store_true", help="no process")
+    parser.add_argument(
+        "--roi", type=int, nargs=4, help="roi (y1, y2, x1, x2)"
+    )
+    parser.add_argument("--time", type=float, help="time")
     args = parser.parse_args()
 
     pprint.pprint(args.__dict__)
 
-    crop(in_file=args.in_file)
+    crop(
+        in_file=args.in_file,
+        process=not args.noprocess,
+        roi=args.roi,
+        time=args.time,
+    )
