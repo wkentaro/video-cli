@@ -9,9 +9,9 @@ import tqdm
 from .. import utils
 
 
-def tile(in_files, out, resize=1, shape=None):
+def tile(in_files, out, resize=1, shape=None, duration="max"):
     fps = None
-    max_n_frames = 0
+    n_frames = None
     readers = []
     for in_file in sorted(in_files):
         reader = imageio.get_reader(in_file)
@@ -19,17 +19,22 @@ def tile(in_files, out, resize=1, shape=None):
 
         if fps is None:
             fps = reader.get_meta_data()["fps"]
-        max_n_frames = max(max_n_frames, reader.count_frames())
 
-    i = 0
+        if n_frames is None:
+            n_frames = reader.count_frames()
+        else:
+            if duration == "min":
+                n_frames = min(n_frames, reader.count_frames())
+            else:
+                n_frames = max(n_frames, reader.count_frames())
+
     writer = None
     images_blank = None
-    pbar = tqdm.tqdm(desc=out, total=max_n_frames)
-    while True:
+    pbar = tqdm.tqdm(desc=out, total=n_frames)
+    for i in range(n_frames):
         images = []
         finished = []
         for j, reader in enumerate(readers):
-            finished = []
             try:
                 img = reader.get_data(i)
                 if resize != 1:
@@ -46,7 +51,6 @@ def tile(in_files, out, resize=1, shape=None):
             images_blank = [np.zeros_like(img) for img in images]
         img = imgviz.tile(images, shape=shape, border=(255, 255, 255))
         img = utils.resize_to_even(img)
-        i += 1
         if writer is None:
             writer = imageio.get_writer(
                 out,
@@ -67,6 +71,7 @@ def main():
     parser.add_argument("--out", "-o", required=True, help="out file")
     parser.add_argument("--resize", type=float, default=1, help="resize")
     parser.add_argument("--shape", help="row x col (e.g., 2x3)")
+    parser.add_argument("--duration", default="max", choices=["max", "min"])
     args = parser.parse_args()
 
     pprint.pprint(args.__dict__)
@@ -79,4 +84,5 @@ def main():
         out=args.out,
         resize=args.resize,
         shape=args.shape,
+        duration=args.duration,
     )
