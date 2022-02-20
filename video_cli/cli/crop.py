@@ -86,7 +86,7 @@ def main():
     parser.add_argument(
         "--roi", type=int, nargs=4, help="roi (y1, y2, x1, x2)"
     )
-    parser.add_argument("--time", type=float, help="time")
+    parser.add_argument("--time", default=0, type=float, help="time")
     args = parser.parse_args()
 
     pprint.pprint(args.__dict__)
