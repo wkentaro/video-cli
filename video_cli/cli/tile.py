@@ -13,7 +13,7 @@ def tile(in_files, out, resize=1, shape=None, duration="max"):
     fps = None
     n_frames = None
     readers = []
-    for in_file in sorted(in_files):
+    for in_file in in_files:
         reader = imageio.get_reader(in_file)
         readers.append(reader)
 
